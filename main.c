@@ -3,9 +3,6 @@
 #include <string.h>
 #include <time.h>
 
-#define MAX_SIZE 1000
-
-// Define the struct for each Order
 typedef struct
 {
     int id;
@@ -19,7 +16,6 @@ typedef struct
     char created_at[50];
 } Order;
 
-// Function to import the database from a file
 void importDatabase(Order database[], int *size)
 {
     FILE *file = fopen("database.txt", "r");
@@ -47,7 +43,6 @@ void importDatabase(Order database[], int *size)
     fclose(file);
 }
 
-// Function to export the database to a file
 void exportDatabase(Order database[], int size)
 {
     FILE *file = fopen("database.txt", "w");
@@ -116,8 +111,8 @@ void lookupOrder(Order database[], int size)
     scanf(" %[^\n]s", searchValue);
 
     int count = 0;
-    int matchingIndices[size]; // Array to store the indices of matching orders
-    int matchingIndex = 0;     // Index for the matchingIndices array
+    int matchingIndices[size];
+    int matchingIndex = 0;
 
     for (int i = 0; i < size; i++)
     {
@@ -213,7 +208,6 @@ void createNewOrder(Order database[], int *size)
 {
     getchar();
 
-    // Temporary variables to store user input
     Order temp;
     char confirm;
 
@@ -282,7 +276,6 @@ void createNewOrder(Order database[], int *size)
     printf("Estimated Delivery Time:\n> %s\n", temp.estimated_delivery_time);
     printf("Created At:\n> %s\n", temp.created_at);
 
-    // Ask for confirmation
     printf("\nConfirm? (y/n): ");
     scanf(" %c", &confirm);
 
@@ -359,37 +352,30 @@ void editDeleteOrder(Order database[], int size)
         switch (editChoice)
         {
         case 1:
-            // Edit product name
             printf("Enter new product name: ");
             scanf(" %[^\n]s", database[index].product_name);
             break;
         case 2:
-            // Edit sender name
             printf("Enter new sender name: ");
             scanf(" %[^\n]s", database[index].sender_name);
             break;
         case 3:
-            // Edit receiver name
             printf("Enter new receiver name: ");
             scanf(" %[^\n]s", database[index].receiver_name);
             break;
         case 4:
-            // Edit receiver phone number
             printf("Enter new receiver phone number: ");
             scanf(" %[^\n]s", database[index].receiver_phone_number);
             break;
         case 5:
-            // Edit receiver address
             printf("Enter new receiver address: ");
             scanf(" %[^\n]s", database[index].receiver_address);
             break;
         case 6:
-            // Edit order state
             printf("Enter new order state (pending/shipping/delivery): ");
             scanf(" %[^\n]s", database[index].order_state);
             break;
         case 7:
-            // Edit estimated delivery time
             printf("Enter new estimated delivery time (5h, 1d, 1w): ");
             scanf(" %[^\n]s", database[index].estimated_delivery_time);
             break;
@@ -426,13 +412,10 @@ void deleteAllData(Order database[], int *size)
 
 int main()
 {
-    Order database[MAX_SIZE];
+    Order database[1000];
     int size = 0;
 
-    // Import the database from file
     importDatabase(database, &size);
-
-    // Export the database to file
     exportDatabase(database, size);
 
     int choice;
