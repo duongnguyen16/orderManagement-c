@@ -3,71 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-typedef struct
-{
-    int id;
-    char product_name[50];
-    char order_state[20];
-    char sender_name[50];
-    char receiver_name[50];
-    char receiver_phone_number[20];
-    char receiver_address[100];
-    char estimated_delivery_time[50];
-    char created_at[50];
-} Order;
-
-void importDatabase(Order database[], int *size)
-{
-    FILE *file = fopen("database.txt", "r");
-    if (file == NULL)
-    {
-        printf("Error opening file.\n");
-        return;
-    }
-
-    *size = 0;
-    while (fscanf(file, "%d\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^\n]",
-                  &database[*size].id,
-                  database[*size].product_name,
-                  database[*size].order_state,
-                  database[*size].sender_name,
-                  database[*size].receiver_name,
-                  database[*size].receiver_phone_number,
-                  database[*size].receiver_address,
-                  database[*size].estimated_delivery_time,
-                  database[*size].created_at) == 9)
-    {
-        (*size)++;
-    }
-
-    fclose(file);
-}
-
-void exportDatabase(Order database[], int size)
-{
-    FILE *file = fopen("database.txt", "w");
-    if (file == NULL)
-    {
-        printf("Error opening file.\n");
-        return;
-    }
-
-    for (int i = 0; i < size; i++)
-    {
-        fprintf(file, "%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
-                database[i].id,
-                database[i].product_name,
-                database[i].order_state,
-                database[i].sender_name,
-                database[i].receiver_name,
-                database[i].receiver_phone_number,
-                database[i].receiver_address,
-                database[i].estimated_delivery_time,
-                database[i].created_at);
-    }
-
-    fclose(file);
-}
+#include "handleDatabase.c"
 
 void listAllOrders(Order database[], int size)
 {
@@ -412,7 +348,7 @@ void deleteAllData(Order database[], int *size)
 
 int main()
 {
-    Order database[1000];
+    Order database[MAX_ORDERS_AVAILABLE];
     int size = 0;
 
     importDatabase(database, &size);
