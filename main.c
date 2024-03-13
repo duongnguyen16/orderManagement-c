@@ -56,13 +56,7 @@ int MAX_ORDERS_AVAILABLE = 5000;
 #include "authService.c"
 #include "handleDatabase.c"
 #include "orderService.c"
-
-void deleteAllData(Order database[], int *size)
-{
-    *size = 0;
-    exportDatabase(database, *size);
-    printf("All data has been erased.\n");
-}
+#include "uiService.c"
 
 int main()
 {

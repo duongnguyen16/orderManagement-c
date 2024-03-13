@@ -77,31 +77,42 @@ Session authenticate(Users *users, int count)
 {
     char username[50];
     char password[50];
-    printf("Enter your username: ");
+    printf("> Username: ");
     scanf("%s", username);
-    printf("Enter your password: ");
-    scanf("%s", password);
 
-    for (int i = 0; i < count; i++)
+    int attempts = 0;
+    while (!isUsernameExist(users, count, username))
     {
-        if (strcmp(users[i].userName, username) == 0 && strcmp(users[i].password, password) == 0)
-        {
-            // Authentication successful, create a session
-            Session session;
-            session.id = users[i].id;
-            strcpy(session.userName, users[i].userName);
-            session.groupId = users[i].groupId;
-            printf("Authentication successful: %d %s %d\n", session.id, session.userName, session.groupId);
-            return session;
-        }
+        printf("Invalid username. Please try again.\n");
+        printf("> Username: ");
+        scanf("%s", username);
     }
 
-    printf("Authentication failed.\n");
-    Session emptySession;
-    emptySession.id = -1;
-    emptySession.userName[0] = '\0';
-    emptySession.groupId = -1;
-    return emptySession;
+    while (attempts < 3)
+    {
+        printf("> Password: ");
+        scanf("%s", password);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (strcmp(users[i].userName, username) == 0 && strcmp(users[i].password, password) == 0)
+            {
+                // Authentication successful, create a session
+                Session session;
+                session.id = users[i].id;
+                strcpy(session.userName, users[i].userName);
+                session.groupId = users[i].groupId;
+                printf("Authentication successfully! Session: %d %s %d\n", session.id, session.userName, session.groupId);
+                return session;
+            }
+        }
+
+        printf("Incorrect password. Please try again.\n");
+        attempts++;
+    }
+
+    printf("Authentication failed because maximum attempts exceeded. Exiting...\n");
+    exit(1);
 }
 
 void registerUser(Users *users, int *count)
@@ -114,7 +125,7 @@ void registerUser(Users *users, int *count)
 
     while (1)
     {
-        printf("Enter your username: ");
+        printf("> Username: ");
         scanf(" %[^\n]", username);
 
         // Check if username is valid
@@ -136,7 +147,7 @@ void registerUser(Users *users, int *count)
 
     while (1)
     {
-        printf("Enter your password: ");
+        printf("> Password: ");
         scanf(" %[^\n]", password);
 
         // Check if password is valid
@@ -151,7 +162,7 @@ void registerUser(Users *users, int *count)
 
     while (1)
     {
-        printf("Enter your display name: ");
+        printf("> Display name: ");
         scanf(" %[^\n]", displayName);
 
         // Check if display name is valid
@@ -166,7 +177,7 @@ void registerUser(Users *users, int *count)
 
     while (1)
     {
-        printf("Enter your phone number: ");
+        printf("> Phone number: ");
         scanf(" %[^\n]", phoneNumber);
 
         // Check if phone number is valid
@@ -179,7 +190,7 @@ void registerUser(Users *users, int *count)
         break;
     }
 
-    printf("Enter your address: ");
+    printf("> Address: ");
     scanf(" %[^\n]", address);
 
     // Generate a unique user ID

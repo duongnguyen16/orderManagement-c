@@ -336,6 +336,14 @@ void editDeleteOrder(Order database[], int size)
     exportDatabase(database, size);
 }
 
+// DELETE AFTER
+void deleteAllData(Order database[], int *size)
+{
+    *size = 0;
+    exportDatabase(database, *size);
+    printf("All data has been erased.\n");
+}
+
 void order_management_main(Session session)
 {
     Order database[MAX_ORDERS_AVAILABLE];
@@ -349,15 +357,11 @@ void order_management_main(Session session)
     {
         system("cls");
         printf("|Current session: %s\n", session.userName);
-
+        printf("[1] Look up \t [2] Create \t [3] Edit/Delete \t [4] Erase all data \t [0] Exit\n");
         importDatabase(database, &size);
         listAllOrders(database, size);
 
-        printf("1. Look up order\n");
-        printf("2. Create a new order\n");
-        printf("3. Edit/Delete order\n");
-        printf("4. Erase all data (Danger)\n");
-        printf("Enter your choice (1-4): ");
+                printf("Enter your choice (1-4): ");
         scanf("%d", &choice_2);
 
         switch (choice_2)
