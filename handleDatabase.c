@@ -3,8 +3,6 @@
 #include <string.h>
 #include <time.h>
 
-#include "__init__.c"
-
 void importDatabase(Order database[], int *size)
 {
     FILE *file = fopen(ORDERS_FILE_NAME, "r");
