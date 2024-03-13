@@ -5,28 +5,9 @@
 
 void listAllOrders(Order database[], int size)
 {
-    if (size == 0)
-    {
-        printf("No orders found.\n");
-        return;
-    }
-    char formatString[] = "%-5d | %-15s | %-15s | %-15s | %-15s | %-20s | %-30s | %-25s | %-20s\n";
-    printf("ID    | Product Name    | Order State     | Sender Name     | Receiver Name   | Receiver Phone       | Receiver Address               | Estimated Delivery Time   | Created At            \n");
-
-    for (int i = 0; i < size; i++)
-    {
-        printf(formatString,
-               database[i].id,
-               database[i].product_name,
-               database[i].order_state,
-               database[i].sender_name,
-               database[i].receiver_name,
-               database[i].receiver_phone_number,
-               database[i].receiver_address,
-               database[i].estimated_delivery_time,
-               database[i].created_at);
-    }
+    showTable(database, size, "No orders found.");
 }
+
 void lookupOrder(Order database[], int size)
 {
     int option;
@@ -113,30 +94,20 @@ void lookupOrder(Order database[], int size)
     else
     {
         printf("\nFound %d order(s).\n", count);
-        if (count > 0)
-        {
-            printf("ID    | Product Name    | Order State     | Sender Name     | Receiver Name   | Receiver Phone       | Receiver Address               | Estimated Delivery Time   | Created At            \n");
-        }
+
+        Order foundOrders[count]; // Array to store found orders
 
         for (int i = 0; i < matchingIndex; i++)
         {
-            char formatString[] = "%-5d | %-15s | %-15s | %-15s | %-15s | %-20s | %-30s | %-25s | %-20s\n";
-            int index = matchingIndices[i];
-            printf(formatString,
-                   database[index].id,
-                   database[index].product_name,
-                   database[index].order_state,
-                   database[index].sender_name,
-                   database[index].receiver_name,
-                   database[index].receiver_phone_number,
-                   database[index].receiver_address,
-                   database[index].estimated_delivery_time,
-                   database[index].created_at);
-            count += 1;
+            foundOrders[i] = database[matchingIndices[i]]; // Collect matching orders into foundOrders array
         }
+
+        // Display all matching orders at once
+        showTable(foundOrders, count, "");
         printf("\n");
     }
 }
+
 void createNewOrder(Order database[], int *size)
 {
     getchar();
@@ -236,19 +207,15 @@ void editDeleteOrder(Order database[], int size)
         if (database[i].id == id)
         {
             index = i;
-            char formatString[] = "%-5d | %-15s | %-15s | %-15s | %-15s | %-20s | %-30s | %-25s | %-20s\n";
-
-            printf("ID    | Product Name    | Order State     | Sender Name     | Receiver Name   | Receiver Phone       | Receiver Address               | Estimated Delivery Time   | Created At            \n");
-            printf(formatString,
-                   database[i].id,
-                   database[i].product_name,
-                   database[i].order_state,
-                   database[i].sender_name,
-                   database[i].receiver_name,
-                   database[i].receiver_phone_number,
-                   database[i].receiver_address,
-                   database[i].estimated_delivery_time,
-                   database[i].created_at);
+            printf("\nOrder Information:\n");
+            printf("1. Product Name: %s\n", database[i].product_name);
+            printf("2. Sender Name: %s\n", database[i].sender_name);
+            printf("3. Receiver Name: %s\n", database[i].receiver_name);
+            printf("4. Receiver Phone Number: %s\n", database[i].receiver_phone_number);
+            printf("5. Receiver Address: %s\n", database[i].receiver_address);
+            printf("6. Order State: %s\n", database[i].order_state);
+            printf("7. Estimated Delivery Time: %s\n", database[i].estimated_delivery_time);
+            printf("8. Created At: %s\n", database[i].created_at);
             break;
         }
     }
@@ -260,6 +227,7 @@ void editDeleteOrder(Order database[], int size)
     }
 
     int choice;
+    printf("\nWhat do you want to do?\n");
     printf("1. Edit order\n");
     printf("2. Delete order\n");
     printf("3. Cancel\n");
@@ -331,7 +299,7 @@ void editDeleteOrder(Order database[], int size)
     }
     else
     {
-        printf("Cancelled.1\n");
+        printf("Cancelled.\n");
     }
     exportDatabase(database, size);
 }
@@ -356,12 +324,14 @@ void order_management_main(Session session)
     do
     {
         system("cls");
-        printf("|Current session: %s\n", session.userName);
+
+        printf("| Current session: %s [%s]\n", session.userName, GROUP_NAME[session.groupId - 1]);
+        printf("| Tools:\n");
         printf("[1] Look up \t [2] Create \t [3] Edit/Delete \t [4] Erase all data \t [0] Exit\n");
+        printf("\n");
         importDatabase(database, &size);
         listAllOrders(database, size);
-
-                printf("Enter your choice (1-4): ");
+        printf("Enter your choice (1-4): ");
         scanf("%d", &choice_2);
 
         switch (choice_2)
@@ -395,12 +365,13 @@ void order_management_main(Session session)
             printf("Press [Enter] to continue...");
             getchar();
             break;
-
+        case 0:
+            printf("Return to main menu...\n");
+            return;
         default:
             printf("Invalid choice. Please try again.\n");
             break;
         }
-
         exportDatabase(database, size);
     } while (choice_2 != 0);
 }

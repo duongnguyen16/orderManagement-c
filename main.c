@@ -47,6 +47,8 @@ typedef struct
     char perm[50];
 } Permission;
 
+char GROUP_NAME[][50] = {"Customer", "Shipper", "Manager", "Admin"};
+
 char ORDERS_FILE_NAME[20] = "orders.txt";
 char USERS_FILE_NAME[20] = "users.txt";
 char GROUPS_FILE_NAME[20] = "groups.txt";
@@ -67,9 +69,10 @@ int main()
     importUsers(users, &count);
 
     int choice;
-    printf("Welcome to the authentication service!\n");
-    printf("1. Login\n");
-    printf("2. Register\n");
+    printf("Welcome to Delivery Management System!\n");
+    printf("First, we need to know your identification:\n");
+    printf("[1] Login\n");
+    printf("[2] Register\n");
     printf("Enter your choice: ");
     scanf("%d", &choice);
 
