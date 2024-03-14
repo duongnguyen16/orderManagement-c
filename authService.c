@@ -38,41 +38,6 @@ bool isUsernameExist(const Users *users, int count, const char *username)
     return false;
 }
 
-void importUsers(Users *users, int *count)
-{
-    FILE *file = fopen("./users.txt", "r");
-    if (file == NULL)
-    {
-        printf("Failed to open user database.\n");
-        exit(1);
-    }
-
-    *count = 0;
-    while (fscanf(file, "%d:%[^:]:%[^:]:%d:%[^:]:%[^:]:%[^\n]\n", &users[*count].id, users[*count].userName, users[*count].displayName, &users[*count].groupId, users[*count].password, users[*count].phoneNumber, users[*count].address) != EOF)
-    {
-        (*count)++;
-    }
-
-    fclose(file);
-}
-
-void exportUsers(Users *users, int count)
-{
-    FILE *file = fopen("./users.txt", "w");
-    if (file == NULL)
-    {
-        printf("Failed to open user database.\n");
-        exit(1);
-    }
-
-    for (int i = 0; i < count; i++)
-    {
-        fprintf(file, "%d:%s:%s:%d:%s:%s:%s\n", users[i].id, users[i].userName, users[i].displayName, users[i].groupId, users[i].password, users[i].phoneNumber, users[i].address);
-    }
-
-    fclose(file);
-}
-
 Session authenticate(Users *users, int count)
 {
     char username[50];

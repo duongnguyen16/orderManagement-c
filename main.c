@@ -37,12 +37,6 @@ typedef struct
 typedef struct
 {
     int id;
-    char name[50];
-} Group;
-
-typedef struct
-{
-    int id;
     int groupId;
     char perm[50];
 } Permission;
@@ -55,10 +49,14 @@ char GROUPS_FILE_NAME[20] = "groups.txt";
 char PERM_FILE_NAME[20] = "perm.txt";
 int MAX_ORDERS_AVAILABLE = 5000;
 
-#include "authService.c"
 #include "handleDatabase.c"
+#include "authService.c"
 #include "orderService.c"
 #include "uiService.c"
+#include "customerService.c"
+#include "shipperService.c"
+#include "managerService.c"
+#include "adminService.c"
 
 int main()
 {
