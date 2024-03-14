@@ -13,16 +13,17 @@ void importDatabase(Order database[], int *size)
     }
 
     *size = 0;
-    while (fscanf(file, "%d\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^\n]",
+    while (fscanf(file, "%d\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^\n]",
                   &database[*size].id,
                   database[*size].product_name,
                   database[*size].order_state,
                   database[*size].sender_name,
+                  database[*size].sender_phone_number,
                   database[*size].receiver_name,
                   database[*size].receiver_phone_number,
                   database[*size].receiver_address,
                   database[*size].estimated_delivery_time,
-                  database[*size].created_at) == 9)
+                  database[*size].created_at) == 10)
     {
         (*size)++;
     }
@@ -41,11 +42,12 @@ void exportDatabase(Order database[], int size)
 
     for (int i = 0; i < size; i++)
     {
-        fprintf(file, "%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+        fprintf(file, "%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
                 database[i].id,
                 database[i].product_name,
                 database[i].order_state,
                 database[i].sender_name,
+                database[i].sender_phone_number,
                 database[i].receiver_name,
                 database[i].receiver_phone_number,
                 database[i].receiver_address,
@@ -86,6 +88,10 @@ Order *extractDataFromDatabase(Order database[], int size, char filter[100], cha
             match = 1;
         }
         else if (strcmp(filter, "sender_name") == 0 && strstr(database[i].sender_name, value) != NULL)
+        {
+            match = 1;
+        }
+        else if (strcmp(filter, "sender_phone_number") == 0 && strstr(database[i].sender_phone_number, value) != NULL)
         {
             match = 1;
         }

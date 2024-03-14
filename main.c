@@ -9,6 +9,7 @@ typedef struct
     char product_name[50];
     char order_state[20];
     char sender_name[50];
+    char sender_phone_number[20];
     char receiver_name[50];
     char receiver_phone_number[20];
     char receiver_address[100];
@@ -50,10 +51,11 @@ int MAX_ORDERS_AVAILABLE = 5000;
 #include "shipperService.c"
 #include "managerService.c"
 #include "adminService.c"
+#include "debug.c"
 
 int main()
 {
-
+    debug("init");
     Users users[100];
     int count = 0;
 
@@ -92,7 +94,7 @@ int main()
     strcpy(session.userName, "duongng");
     session.groupId = 4;
     // END TESTING
-
+    debug("session load!");
     // session = authenticate(users, count);
 
     order_management_main(session);

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
 void lookupOrder(Order database[], int size)
 {
     int option;
@@ -12,6 +13,7 @@ void lookupOrder(Order database[], int size)
     printf("4. Receiver Name\n");
     printf("5. Receiver Phone Number\n");
     printf("6. Receiver Address\n");
+    printf("7. Sender Phone Number\n"); // Added option for sender_phone_number
     printf("Enter your choice: ");
     scanf("%d", &option);
 
@@ -41,6 +43,9 @@ void lookupOrder(Order database[], int size)
     case 6:
         strcpy(filter, "receiver_address");
         break;
+    case 7:
+        strcpy(filter, "sender_phone_number"); // Added case for sender_phone_number
+        break;
     default:
         printf("Invalid option.\n");
         return;
@@ -55,7 +60,6 @@ void lookupOrder(Order database[], int size)
     }
     else
     {
-
         showTable(foundOrders, database, size, "");
         printf("\n");
     }
@@ -80,6 +84,9 @@ void createNewOrder(Order database[], int *size)
 
     printf("Enter sender name:\n> ");
     scanf(" %[^\n]s", temp.sender_name);
+
+    printf("Enter sender phone number:\n> ");    // Added prompt for sender phone number
+    scanf(" %[^\n]s", temp.sender_phone_number); // Added input for sender phone number
 
     printf("Enter receiver name:\n> ");
     scanf(" %[^\n]s", temp.receiver_name);
@@ -133,6 +140,7 @@ void createNewOrder(Order database[], int *size)
     printf("ID:\n> %d\n", temp.id);
     printf("Product Name:\n> %s\n", temp.product_name);
     printf("Sender Name:\n> %s\n", temp.sender_name);
+    printf("Sender Phone Number:\n> %s\n", temp.sender_phone_number); // Added display for sender phone number
     printf("Receiver Name:\n> %s\n", temp.receiver_name);
     printf("Receiver Phone Number:\n> %s\n", temp.receiver_phone_number);
     printf("Receiver Address:\n> %s\n", temp.receiver_address);
@@ -155,6 +163,7 @@ void createNewOrder(Order database[], int *size)
         printf("Canceled.\n");
     }
 }
+
 void editDeleteOrder(Order database[], int size)
 {
     int id;
@@ -170,12 +179,13 @@ void editDeleteOrder(Order database[], int size)
             printf("\nOrder Information:\n");
             printf("1. Product Name: %s\n", database[i].product_name);
             printf("2. Sender Name: %s\n", database[i].sender_name);
-            printf("3. Receiver Name: %s\n", database[i].receiver_name);
-            printf("4. Receiver Phone Number: %s\n", database[i].receiver_phone_number);
-            printf("5. Receiver Address: %s\n", database[i].receiver_address);
-            printf("6. Order State: %s\n", database[i].order_state);
-            printf("7. Estimated Delivery Time: %s\n", database[i].estimated_delivery_time);
-            printf("8. Created At: %s\n", database[i].created_at);
+            printf("3. Sender Phone Number: %s\n", database[i].sender_phone_number);
+            printf("4. Receiver Name: %s\n", database[i].receiver_name);
+            printf("5. Receiver Phone Number: %s\n", database[i].receiver_phone_number);
+            printf("6. Receiver Address: %s\n", database[i].receiver_address);
+            printf("7. Order State: %s\n", database[i].order_state);
+            printf("8. Estimated Delivery Time: %s\n", database[i].estimated_delivery_time);
+            printf("9. Created At: %s\n", database[i].created_at);
             break;
         }
     }
@@ -199,15 +209,16 @@ void editDeleteOrder(Order database[], int size)
         printf("\nOrder Information:\n");
         printf("1. Product Name: %s\n", database[index].product_name);
         printf("2. Sender Name: %s\n", database[index].sender_name);
-        printf("3. Receiver Name: %s\n", database[index].receiver_name);
-        printf("4. Receiver Phone Number: %s\n", database[index].receiver_phone_number);
-        printf("5. Receiver Address: %s\n", database[index].receiver_address);
-        printf("6. Order State: %s\n", database[index].order_state);
-        printf("7. Estimated Delivery Time: %s\n", database[index].estimated_delivery_time);
-        printf("8. Created At: %s\n", database[index].created_at);
+        printf("3. Sender Phone Number: %s\n", database[index].sender_phone_number);
+        printf("4. Receiver Name: %s\n", database[index].receiver_name);
+        printf("5. Receiver Phone Number: %s\n", database[index].receiver_phone_number);
+        printf("6. Receiver Address: %s\n", database[index].receiver_address);
+        printf("7. Order State: %s\n", database[index].order_state);
+        printf("8. Estimated Delivery Time: %s\n", database[index].estimated_delivery_time);
+        printf("9. Created At: %s\n", database[index].created_at);
 
         int editChoice;
-        printf("\nEnter the number of the information you want to edit (1-7): ");
+        printf("\nEnter the number of the information you want to edit (1-8): ");
         scanf("%d", &editChoice);
 
         switch (editChoice)
@@ -221,22 +232,26 @@ void editDeleteOrder(Order database[], int size)
             scanf(" %[^\n]s", database[index].sender_name);
             break;
         case 3:
+            printf("Enter new sender phone number: ");
+            scanf(" %[^\n]s", database[index].sender_phone_number);
+            break;
+        case 4:
             printf("Enter new receiver name: ");
             scanf(" %[^\n]s", database[index].receiver_name);
             break;
-        case 4:
+        case 5:
             printf("Enter new receiver phone number: ");
             scanf(" %[^\n]s", database[index].receiver_phone_number);
             break;
-        case 5:
+        case 6:
             printf("Enter new receiver address: ");
             scanf(" %[^\n]s", database[index].receiver_address);
             break;
-        case 6:
+        case 7:
             printf("Enter new order state (pending/shipping/delivery): ");
             scanf(" %[^\n]s", database[index].order_state);
             break;
-        case 7:
+        case 8:
             printf("Enter new estimated delivery time (5h, 1d, 1w): ");
             scanf(" %[^\n]s", database[index].estimated_delivery_time);
             break;
@@ -275,8 +290,9 @@ void order_management_main(Session session)
 {
     Order database[MAX_ORDERS_AVAILABLE];
     int size = 0;
-
+    debug("import");
     importDatabase(database, &size);
+    debug("export");
     exportDatabase(database, size);
 
     int choice_2;

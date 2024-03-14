@@ -39,7 +39,7 @@ void showTable(Order database[], Order main_db[], int temp_size, const char *noO
         return;
     }
 
-    int columnWidths[9] = {3, 13, 12, 12, 15, 16, 16, 20, 12};
+    int columnWidths[10] = {3, 13, 12, 12, 15, 16, 16, 20, 12, 18};
 
     for (int i = 0; i < size; i++)
     {
@@ -63,10 +63,12 @@ void showTable(Order database[], Order main_db[], int temp_size, const char *noO
             columnWidths[7] = strlen(database[i].estimated_delivery_time);
         if (strlen(database[i].created_at) > columnWidths[8])
             columnWidths[8] = strlen(database[i].created_at);
+        if (strlen(database[i].sender_phone_number) > columnWidths[9])
+            columnWidths[9] = strlen(database[i].sender_phone_number);
     }
 
     printf("+");
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 10; i++)
     {
         for (int j = 0; j < columnWidths[i] + 2; j++)
         {
@@ -76,14 +78,14 @@ void showTable(Order database[], Order main_db[], int temp_size, const char *noO
     }
     printf("\n");
 
-    printf("| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n",
+    printf("| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n",
            columnWidths[0], "ID", columnWidths[1], "Product", columnWidths[2], "State",
            columnWidths[3], "Sender", columnWidths[4], "Receiver",
            columnWidths[5], "Phone", columnWidths[6], "Address",
-           columnWidths[7], "EDT", columnWidths[8], "Created");
+           columnWidths[7], "EDT", columnWidths[8], "Created", columnWidths[9], "Sender Phone");
 
     printf("+");
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 10; i++)
     {
         for (int j = 0; j < columnWidths[i] + 2; j++)
         {
@@ -95,7 +97,7 @@ void showTable(Order database[], Order main_db[], int temp_size, const char *noO
 
     for (int i = 0; i < size; i++)
     {
-        printf("| %-*d | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n",
+        printf("| %-*d | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n",
                columnWidths[0], database[i].id,
                columnWidths[1], database[i].product_name,
                columnWidths[2], database[i].order_state,
@@ -104,10 +106,11 @@ void showTable(Order database[], Order main_db[], int temp_size, const char *noO
                columnWidths[5], database[i].receiver_phone_number,
                columnWidths[6], database[i].receiver_address,
                columnWidths[7], database[i].estimated_delivery_time,
-               columnWidths[8], database[i].created_at);
+               columnWidths[8], database[i].created_at,
+               columnWidths[9], database[i].sender_phone_number);
 
         printf("+");
-        for (int j = 0; j < 9; j++)
+        for (int j = 0; j < 10; j++)
         {
             for (int k = 0; k < columnWidths[j] + 2; k++)
             {
