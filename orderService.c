@@ -3,11 +3,6 @@
 #include <string.h>
 #include <time.h>
 
-void listAllOrders(Order database[], int size)
-{
-    showTable(database, size, "No orders found.");
-}
-
 void lookupOrder(Order database[], int size)
 {
     int option;
@@ -108,6 +103,81 @@ void lookupOrder(Order database[], int size)
     }
 }
 
+Order *extractDataFromDatabase(Order database[], int size, char filter[100], char value[100])
+{
+    // Allocate memory to store potentially all orders if they match the filter criteria
+    Order *result = malloc(size * sizeof(Order));
+    if (result == NULL)
+    {
+        // Handle memory allocation failure (optional)
+        printf("Memory allocation failed.\n");
+        return NULL; // Return NULL or handle as appropriate
+    }
+
+    int count = 0; // To count the number of matching orders
+
+    for (int i = 0; i < size; i++)
+    {
+        int match = 0; // False by default
+
+        if (strcmp(filter, "id") == 0 && database[i].id == atoi(value))
+        {
+            match = 1; // True if id matches
+        }
+        else if (strcmp(filter, "product_name") == 0 && strstr(database[i].product_name, value) != NULL)
+        {
+            match = 1; // True if product name contains the value
+        }
+        else if (strcmp(filter, "order_state") == 0 && strstr(database[i].order_state, value) != NULL)
+        {
+            match = 1; // True if order state matches
+        }
+        else if (strcmp(filter, "sender_name") == 0 && strstr(database[i].sender_name, value) != NULL)
+        {
+            match = 1; // True if sender name contains the value
+        }
+        else if (strcmp(filter, "receiver_name") == 0 && strstr(database[i].receiver_name, value) != NULL)
+        {
+            match = 1; // True if receiver name contains the value
+        }
+        else if (strcmp(filter, "receiver_phone_number") == 0 && strstr(database[i].receiver_phone_number, value) != NULL)
+        {
+            match = 1; // True if receiver phone number matches
+        }
+        else if (strcmp(filter, "receiver_address") == 0 && strstr(database[i].receiver_address, value) != NULL)
+        {
+            match = 1; // True if receiver address contains the value
+        }
+        else if (strcmp(filter, "estimated_delivery_time") == 0 && strstr(database[i].estimated_delivery_time, value) != NULL)
+        {
+            match = 1; // True if estimated delivery time matches
+        }
+        else if (strcmp(filter, "") == 0 && strcmp(value, "") == 0)
+        {
+            match = 1; // True if no filter is specified (i.e., all orders match)
+        }
+        // match = 1;
+        if (match)
+        {
+            // If this order matches the filter, add it to the result array
+            result[count] = database[i];
+            count++;
+        }
+    }
+
+    // Resize the result array to the actual number of matching orders found
+    result = realloc(result, count * sizeof(Order));
+
+    // Optionally, return the count of found items via a pointer argument or other means if necessary
+    return result; // Return the pointer to the filtered orders array
+}
+
+void listAllOrders(Order database[], int size)
+{
+
+    Order *result = extractDataFromDatabase(database, size, "", "");
+    showTable(result, size, "No orders available.");
+}
 void createNewOrder(Order database[], int *size)
 {
     getchar();
@@ -325,10 +395,9 @@ void order_management_main(Session session)
     {
         system("cls");
 
-        printf("| Current session: %s [%s]\n", session.userName, GROUP_NAME[session.groupId - 1]);
+        printf("| Current session: %s [%s]\n", session.userName, GROUP_NAME[session.groupId]);
         printf("| Tools:\n");
         printf("[1] Look up \t [2] Create \t [3] Edit/Delete \t [4] Erase all data \t [0] Exit\n");
-        printf("\n");
         importDatabase(database, &size);
         listAllOrders(database, size);
         printf("Enter your choice (1-4): ");
@@ -339,7 +408,6 @@ void order_management_main(Session session)
         case 1:
             system("cls");
             lookupOrder(database, size);
-            getchar();
             printf("\nPress [Enter] to continue...");
             getchar();
             break;
@@ -347,21 +415,17 @@ void order_management_main(Session session)
             system("cls");
             createNewOrder(database, &size);
             getchar();
-            getchar();
             printf("Press [Enter] to continue...");
             getchar();
             break;
         case 3:
             system("cls");
             editDeleteOrder(database, size);
-            getchar();
             printf("Press [Enter] to continue...");
             getchar();
             break;
         case 4:
             system("cls");
-            deleteAllData(database, &size);
-            getchar();
             printf("Press [Enter] to continue...");
             getchar();
             break;

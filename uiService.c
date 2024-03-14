@@ -7,8 +7,11 @@ void spam_something(char *str, int n)
     printf("\n");
 }
 
+// the temp_size will not work after release
 void showTable(Order database[], int size, const char *noOrderMessage)
 {
+    // int size = sizeof(database) / sizeof(database[0]);
+
     if (size == 0)
     {
         printf("%s\n", noOrderMessage);

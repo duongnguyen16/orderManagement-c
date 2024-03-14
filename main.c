@@ -34,14 +34,7 @@ typedef struct
     char address[100];
 } Users;
 
-typedef struct
-{
-    int id;
-    int groupId;
-    char perm[50];
-} Permission;
-
-char GROUP_NAME[][50] = {"Customer", "Shipper", "Manager", "Admin"};
+char GROUP_NAME[][50] = {"Invalid", "Customer", "Shipper", "Manager", "Admin", "Tester"};
 
 char ORDERS_FILE_NAME[20] = "orders.txt";
 char USERS_FILE_NAME[20] = "users.txt";
@@ -60,37 +53,47 @@ int MAX_ORDERS_AVAILABLE = 5000;
 
 int main()
 {
-    Session session;
+
     Users users[100];
     int count = 0;
 
     importUsers(users, &count);
 
-    int choice;
-    printf("Welcome to Delivery Management System!\n");
-    printf("First, we need to know your identification:\n");
-    printf("[1] Login\n");
-    printf("[2] Register\n");
-    printf("Enter your choice: ");
-    scanf("%d", &choice);
+    // Session session;
+    // int choice;
+    // printf("Welcome to Delivery Management System!\n");
+    // printf("First, we need to know your identification:\n");
+    // printf("[1] Login\n");
+    // printf("[2] Register\n");
+    // printf("Enter your choice: ");
+    // scanf("%d", &choice);
 
-    switch (choice)
-    {
-    case 1:
-        session = authenticate(users, count);
-        exportUsers(users, count);
-        break;
+    // switch (choice)
+    // {
+    // case 1:
+    //     session = authenticate(users, count);
+    //     exportUsers(users, count);
+    //     break;
 
-    case 2:
-        registerUser(users, &count);
-        exportUsers(users, count);
-        break;
+    // case 2:
+    //     registerUser(users, &count);
+    //     exportUsers(users, count);
+    //     break;
 
-    default:
-        printf("Invalid choice.\n");
-        exportUsers(users, count);
-        break;
-    }
+    // default:
+    //     printf("Invalid choice.\n");
+    //     exportUsers(users, count);
+    //     break;
+    // }
+
+    // FOR TESTING ONLY
+    Session session;
+    session.id = 1;
+    strcpy(session.userName, "duongng");
+    session.groupId = 4;
+    // END TESTING
+
+    // session = authenticate(users, count);
 
     order_management_main(session);
     return 0;
