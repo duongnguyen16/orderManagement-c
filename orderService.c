@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
 void lookupOrder(Order database[], int size)
 {
     int option;
@@ -20,163 +19,54 @@ void lookupOrder(Order database[], int size)
     printf("Enter the search value: ");
     scanf(" %[^\n]s", searchValue);
 
-    int count = 0;
-    int matchingIndices[size];
-    int matchingIndex = 0;
+    char filter[100];
 
-    for (int i = 0; i < size; i++)
+    switch (option)
     {
-        switch (option)
-        {
-        case 1:
-            if (database[i].id == atoi(searchValue))
-            {
-                matchingIndices[matchingIndex] = i;
-                matchingIndex++;
-                count++;
-            }
-            break;
-        case 2:
-            if (strstr(database[i].product_name, searchValue) != NULL)
-            {
-                matchingIndices[matchingIndex] = i;
-                matchingIndex++;
-                count++;
-            }
-            break;
-        case 3:
-            if (strstr(database[i].sender_name, searchValue) != NULL)
-            {
-                matchingIndices[matchingIndex] = i;
-                matchingIndex++;
-                count++;
-            }
-            break;
-        case 4:
-            if (strstr(database[i].receiver_name, searchValue) != NULL)
-            {
-                matchingIndices[matchingIndex] = i;
-                matchingIndex++;
-                count++;
-            }
-            break;
-        case 5:
-            if (strstr(database[i].receiver_phone_number, searchValue) != NULL)
-            {
-                matchingIndices[matchingIndex] = i;
-                matchingIndex++;
-                count++;
-            }
-            break;
-        case 6:
-            if (strstr(database[i].receiver_address, searchValue) != NULL)
-            {
-                matchingIndices[matchingIndex] = i;
-                matchingIndex++;
-                count++;
-            }
-            break;
-        default:
-            printf("Invalid option.\n");
-            return;
-        }
+    case 1:
+        strcpy(filter, "id");
+        break;
+    case 2:
+        strcpy(filter, "product_name");
+        break;
+    case 3:
+        strcpy(filter, "sender_name");
+        break;
+    case 4:
+        strcpy(filter, "receiver_name");
+        break;
+    case 5:
+        strcpy(filter, "receiver_phone_number");
+        break;
+    case 6:
+        strcpy(filter, "receiver_address");
+        break;
+    default:
+        printf("Invalid option.\n");
+        return;
     }
 
-    if (count == 0)
+    Order *foundOrders = extractDataFromDatabase(database, size, filter, searchValue);
+
+    if (foundOrders == NULL)
     {
-        printf("Order not found.\n");
+        printf("\nOrder not found.");
+        return;
     }
     else
     {
-        printf("\nFound %d order(s).\n", count);
 
-        Order foundOrders[count]; // Array to store found orders
-
-        for (int i = 0; i < matchingIndex; i++)
-        {
-            foundOrders[i] = database[matchingIndices[i]]; // Collect matching orders into foundOrders array
-        }
-
-        // Display all matching orders at once
-        showTable(foundOrders, count, "");
+        showTable(foundOrders, database, size, "");
         printf("\n");
     }
-}
 
-Order *extractDataFromDatabase(Order database[], int size, char filter[100], char value[100])
-{
-    // Allocate memory to store potentially all orders if they match the filter criteria
-    Order *result = malloc(size * sizeof(Order));
-    if (result == NULL)
-    {
-        // Handle memory allocation failure (optional)
-        printf("Memory allocation failed.\n");
-        return NULL; // Return NULL or handle as appropriate
-    }
-
-    int count = 0; // To count the number of matching orders
-
-    for (int i = 0; i < size; i++)
-    {
-        int match = 0; // False by default
-
-        if (strcmp(filter, "id") == 0 && database[i].id == atoi(value))
-        {
-            match = 1; // True if id matches
-        }
-        else if (strcmp(filter, "product_name") == 0 && strstr(database[i].product_name, value) != NULL)
-        {
-            match = 1; // True if product name contains the value
-        }
-        else if (strcmp(filter, "order_state") == 0 && strstr(database[i].order_state, value) != NULL)
-        {
-            match = 1; // True if order state matches
-        }
-        else if (strcmp(filter, "sender_name") == 0 && strstr(database[i].sender_name, value) != NULL)
-        {
-            match = 1; // True if sender name contains the value
-        }
-        else if (strcmp(filter, "receiver_name") == 0 && strstr(database[i].receiver_name, value) != NULL)
-        {
-            match = 1; // True if receiver name contains the value
-        }
-        else if (strcmp(filter, "receiver_phone_number") == 0 && strstr(database[i].receiver_phone_number, value) != NULL)
-        {
-            match = 1; // True if receiver phone number matches
-        }
-        else if (strcmp(filter, "receiver_address") == 0 && strstr(database[i].receiver_address, value) != NULL)
-        {
-            match = 1; // True if receiver address contains the value
-        }
-        else if (strcmp(filter, "estimated_delivery_time") == 0 && strstr(database[i].estimated_delivery_time, value) != NULL)
-        {
-            match = 1; // True if estimated delivery time matches
-        }
-        else if (strcmp(filter, "") == 0 && strcmp(value, "") == 0)
-        {
-            match = 1; // True if no filter is specified (i.e., all orders match)
-        }
-        // match = 1;
-        if (match)
-        {
-            // If this order matches the filter, add it to the result array
-            result[count] = database[i];
-            count++;
-        }
-    }
-
-    // Resize the result array to the actual number of matching orders found
-    result = realloc(result, count * sizeof(Order));
-
-    // Optionally, return the count of found items via a pointer argument or other means if necessary
-    return result; // Return the pointer to the filtered orders array
+    free(foundOrders);
 }
 
 void listAllOrders(Order database[], int size)
 {
-
     Order *result = extractDataFromDatabase(database, size, "", "");
-    showTable(result, size, "No orders available.");
+    showTable(result, database, size, "No orders found.");
 }
 void createNewOrder(Order database[], int *size)
 {
@@ -374,7 +264,6 @@ void editDeleteOrder(Order database[], int size)
     exportDatabase(database, size);
 }
 
-// DELETE AFTER
 void deleteAllData(Order database[], int *size)
 {
     *size = 0;
@@ -396,7 +285,6 @@ void order_management_main(Session session)
         system("cls");
 
         printf("| Current session: %s [%s]\n", session.userName, GROUP_NAME[session.groupId]);
-        printf("| Tools:\n");
         printf("[1] Look up \t [2] Create \t [3] Edit/Delete \t [4] Erase all data \t [0] Exit\n");
         importDatabase(database, &size);
         listAllOrders(database, size);
@@ -408,6 +296,7 @@ void order_management_main(Session session)
         case 1:
             system("cls");
             lookupOrder(database, size);
+            getchar();
             printf("\nPress [Enter] to continue...");
             getchar();
             break;

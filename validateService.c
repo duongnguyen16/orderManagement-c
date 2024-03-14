@@ -3,13 +3,12 @@
 
 bool validateUsername(const char *username)
 {
-    // Check for spaces
+
     if (strchr(username, ' ') != NULL)
     {
         return false;
     }
 
-    // Check for special characters
     for (int i = 0; i < strlen(username); i++)
     {
         if (!isalnum(username[i]))
@@ -23,13 +22,12 @@ bool validateUsername(const char *username)
 
 bool validatePassword(const char *password)
 {
-    // Check for spaces
+
     if (strchr(password, ' ') != NULL)
     {
         return false;
     }
 
-    // Check length
     if (strlen(password) < 6)
     {
         return false;
@@ -40,7 +38,7 @@ bool validatePassword(const char *password)
 
 bool validatePhoneNumber(const char *phoneNumber)
 {
-    // Check if all characters are digits
+
     for (int i = 0; i < strlen(phoneNumber); i++)
     {
         if (!isdigit(phoneNumber[i]))
@@ -54,7 +52,7 @@ bool validatePhoneNumber(const char *phoneNumber)
 
 bool validateDisplayName(const char *displayName)
 {
-    // Check if empty
+
     if (strlen(displayName) == 0)
     {
         return false;

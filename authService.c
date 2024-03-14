@@ -7,24 +7,6 @@
 
 #include "validateService.c"
 
-// typedef struct
-// {
-//     int id;
-//     char userName[50];
-//     char displayName[50];
-//     int groupId;
-//     char password[50];
-//     char phoneNumber[20];
-//     char address[100];
-// } Users;
-
-// typedef struct
-// {
-//     int id;
-//     char userName[50];
-//     int groupId;
-// } Session;
-
 bool isUsernameExist(const Users *users, int count, const char *username)
 {
     for (int i = 0; i < count; i++)
@@ -62,7 +44,7 @@ Session authenticate(Users *users, int count)
         {
             if (strcmp(users[i].userName, username) == 0 && strcmp(users[i].password, password) == 0)
             {
-                // Authentication successful, create a session
+
                 Session session;
                 session.id = users[i].id;
                 strcpy(session.userName, users[i].userName);
@@ -93,14 +75,12 @@ void registerUser(Users *users, int *count)
         printf("> Username: ");
         scanf(" %[^\n]", username);
 
-        // Check if username is valid
         if (!validateUsername(username))
         {
             printf("Invalid username. Please try again.\n");
             continue;
         }
 
-        // Check if username already exists
         if (isUsernameExist(users, *count, username))
         {
             printf("Username already exists. Please try again.\n");
@@ -115,7 +95,6 @@ void registerUser(Users *users, int *count)
         printf("> Password: ");
         scanf(" %[^\n]", password);
 
-        // Check if password is valid
         if (!validatePassword(password))
         {
             printf("Invalid password. Please try again.\n");
@@ -130,7 +109,6 @@ void registerUser(Users *users, int *count)
         printf("> Display name: ");
         scanf(" %[^\n]", displayName);
 
-        // Check if display name is valid
         if (!validateDisplayName(displayName))
         {
             printf("Invalid display name. Please try again.\n");
@@ -145,7 +123,6 @@ void registerUser(Users *users, int *count)
         printf("> Phone number: ");
         scanf(" %[^\n]", phoneNumber);
 
-        // Check if phone number is valid
         if (!validatePhoneNumber(phoneNumber))
         {
             printf("Invalid phone number. Please try again.\n");
@@ -158,11 +135,9 @@ void registerUser(Users *users, int *count)
     printf("> Address: ");
     scanf(" %[^\n]", address);
 
-    // Generate a unique user ID
     srand(time(NULL));
     int id = rand();
 
-    // Create a new user with default group ID of 1
     Users newUser;
     newUser.id = id;
     strcpy(newUser.userName, username);

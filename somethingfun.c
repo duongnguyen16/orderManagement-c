@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <conio.h> // For getch() function
+#include <conio.h>
 
 #define MENU_SIZE 4
 
@@ -16,7 +16,7 @@ int main()
 
     while (1)
     {
-        // Display menu options
+
         for (i = 0; i < MENU_SIZE; i++)
         {
             if (i == choice)
@@ -29,22 +29,20 @@ int main()
             }
         }
 
-        // Get user input
         char key = getch();
 
-        // Handle user input
         switch (key)
         {
-        case 'w': // Up arrow key
+        case 'w':
             choice = (choice - 1 + MENU_SIZE) % MENU_SIZE;
             break;
-        case 's': // Down arrow key
+        case 's':
             choice = (choice + 1) % MENU_SIZE;
             break;
-        case '\r': // Enter key
+        case '\r':
             if (choice == MENU_SIZE - 1)
             {
-                // Exit if "Exit" option is selected
+
                 return 0;
             }
             printf("\nYou selected: %s\n", menuOptions[choice]);
@@ -53,7 +51,6 @@ int main()
             break;
         }
 
-        // Move cursor up to the beginning of the menu
         for (i = 0; i < MENU_SIZE; i++)
         {
             printf("\033[A");

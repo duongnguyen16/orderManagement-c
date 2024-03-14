@@ -56,6 +56,71 @@ void exportDatabase(Order database[], int size)
     fclose(file);
 }
 
+Order *extractDataFromDatabase(Order database[], int size, char filter[100], char value[100])
+{
+
+    Order *result = malloc(size * sizeof(Order));
+    if (result == NULL)
+    {
+
+        printf("Memory allocation failed.\n");
+        return NULL;
+    }
+
+    int count = 0;
+
+    for (int i = 0; i < size; i++)
+    {
+        int match = 0;
+
+        if (strcmp(filter, "id") == 0 && database[i].id == atoi(value))
+        {
+            match = 1;
+        }
+        else if (strcmp(filter, "product_name") == 0 && strstr(database[i].product_name, value) != NULL)
+        {
+            match = 1;
+        }
+        else if (strcmp(filter, "order_state") == 0 && strstr(database[i].order_state, value) != NULL)
+        {
+            match = 1;
+        }
+        else if (strcmp(filter, "sender_name") == 0 && strstr(database[i].sender_name, value) != NULL)
+        {
+            match = 1;
+        }
+        else if (strcmp(filter, "receiver_name") == 0 && strstr(database[i].receiver_name, value) != NULL)
+        {
+            match = 1;
+        }
+        else if (strcmp(filter, "receiver_phone_number") == 0 && strstr(database[i].receiver_phone_number, value) != NULL)
+        {
+            match = 1;
+        }
+        else if (strcmp(filter, "receiver_address") == 0 && strstr(database[i].receiver_address, value) != NULL)
+        {
+            match = 1;
+        }
+        else if (strcmp(filter, "estimated_delivery_time") == 0 && strstr(database[i].estimated_delivery_time, value) != NULL)
+        {
+            match = 1;
+        }
+        else if (strcmp(filter, "") == 0 && strcmp(value, "") == 0)
+        {
+            match = 1;
+        }
+        if (match)
+        {
+            result[count] = database[i];
+            count++;
+        }
+    }
+
+    result = realloc(result, count * sizeof(Order));
+
+    return result;
+}
+
 void importUsers(Users *users, int *count)
 {
     FILE *file = fopen("./users.txt", "r");

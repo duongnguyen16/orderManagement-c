@@ -82,16 +82,16 @@ def update_data():
 
     while True:
         isUpdate = False
-        time.sleep(1)  # Wait for 1 second before checking for updates
+        time.sleep(1)
 
         if os.path.getmtime('./output/orders.txt') > orders_last_modified:
             orders = read_orders()
             print('Orders updated')
             isUpdate = True
-            # os.system('cls' if os.name == 'nt' else 'clear')  # Clear console
+
             print(tabulate(orders, headers='keys', tablefmt='grid'))
             orders_last_modified = os.path.getmtime(
-                './output/orders.txt')  # Update last modified time
+                './output/orders.txt')
 
         if os.path.getmtime('./output/users.txt') > users_last_modified:
             users = read_users()
@@ -99,7 +99,7 @@ def update_data():
             isUpdate = True
             print(tabulate(users, headers='keys', tablefmt='grid'))
             users_last_modified = os.path.getmtime(
-                './output/users.txt')  # Update last modified time
+                './output/users.txt')
 
         if os.path.getmtime('./output/group.txt') > groups_last_modified:
             groups = read_groups()
@@ -107,7 +107,7 @@ def update_data():
             isUpdate = True
             print(tabulate(groups, headers='keys', tablefmt='grid'))
             groups_last_modified = os.path.getmtime(
-                './output/group.txt')  # Update last modified time
+                './output/group.txt')
 
         if os.path.getmtime('./output/perm.txt') > permissions_last_modified:
             permissions = read_permissions()
@@ -115,11 +115,11 @@ def update_data():
             isUpdate = True
             print(tabulate(permissions, headers='keys', tablefmt='grid'))
             permissions_last_modified = os.path.getmtime(
-                './output/perm.txt')  # Update last modified time
+                './output/perm.txt')
 
         if isUpdate:
-            os.system('cls' if os.name == 'nt' else 'clear')  # Clear console
-            # Print all tables
+            os.system('cls' if os.name == 'nt' else 'clear')
+
             print('Orders:')
             print(tabulate(orders, headers='keys', tablefmt='grid'))
             print('Users:')
@@ -130,5 +130,4 @@ def update_data():
             print(tabulate(permissions, headers='keys', tablefmt='grid'))
 
 
-# Start updating the data
 update_data()
