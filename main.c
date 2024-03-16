@@ -61,45 +61,45 @@ int MAX_ORDERS_AVAILABLE = 1000;
 int main()
 {
     srand(time(NULL));
-
+    Session session;
     system("cls");
     debug("init");
     User users[100];
     int count = 0;
     importUsers(users, &count);
     // Session session;
-    //  int choice;
-    // printf("Welcome to Delivery Management System!\n");
-    // printf("First, we need to know your identity: \n");
-    // printf("[1] Login\n");
-    // printf("[2] Register\n");
-    // printf("> Enter: ");
-    // scanf("%d", &choice);
+    int choice;
+    printf("Welcome to Delivery Management System!\n");
+    printf("First, we need to know your identity: \n");
+    printf("[1] Login\n");
+    printf("[2] Register\n");
+    printf("> Enter: ");
+    scanf("%d", &choice);
 
-    // switch (choice)
-    // {
-    // case 1:
-    //     session = authenticate(users, count);
-    //     exportUsers(users, count);
-    //     break;
+    switch (choice)
+    {
+    case 1:
+        session = authenticate(users, count);
+        exportUsers(users, count);
+        break;
 
-    // case 2:
-    //     registerUser(users, &count);
-    //     exportUsers(users, count);
-    //     break;
+    case 2:
+        registerUser(users, &count);
+        exportUsers(users, count);
+        break;
 
-    // default:
-    //     printf("Invalid choice.\n");
-    //     exportUsers(users, count);
-    //     break;
-    // }
+    default:
+        printf("Invalid choice.\n");
+        exportUsers(users, count);
+        break;
+    }
 
     // FOR TESTING ONLY
 
-    Session session;
-    session.id = 1;
-    strcpy(session.userName, "duongng");
-    session.groupId = 3;
+    // Session session;
+    // session.id = 1;
+    // strcpy(session.userName, "duongng");
+    // session.groupId = 3;
 
     // END TESTING
 
