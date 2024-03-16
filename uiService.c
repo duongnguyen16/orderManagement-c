@@ -39,34 +39,34 @@ int compareStates(const void *a, const void *b)
 {
     const Order *orderA = (const Order *)a;
     const Order *orderB = (const Order *)b;
-    // Assuming order states are compared based on priority (pending < delivery < shipping < completed)
+
     if (strcmp(orderA->order_state, orderB->order_state) == 0)
     {
-        return orderA->id - orderB->id; // Maintain order by ID if states are same
+        return orderA->id - orderB->id;
     }
     else if (strcmp(orderA->order_state, "pending") == 0)
     {
-        return -1; // A is pending, B is not, so A should come before B
+        return -1;
     }
     else if (strcmp(orderB->order_state, "pending") == 0)
     {
-        return 1; // B is pending, A is not, so B should come before A
+        return 1;
     }
     else if (strcmp(orderA->order_state, "delivery") == 0)
     {
-        return -1; // A is in delivery, B is in shipping or completed, so A should come before B
+        return -1;
     }
     else if (strcmp(orderB->order_state, "delivery") == 0)
     {
-        return 1; // B is in delivery, A is in shipping or completed, so B should come before A
+        return 1;
     }
     else if (strcmp(orderA->order_state, "shipping") == 0)
     {
-        return -1; // A is in shipping, B is completed, so A should come before B
+        return -1;
     }
     else
     {
-        return 1; // B is in shipping, A is completed, so B should come before A
+        return 1;
     }
 }
 
@@ -84,7 +84,6 @@ void showTable(Orders orders, const char *noOrderMessage)
         return;
     }
 
-    // Sorting based on sort_by argument
     if (strcmp(sort_by, "Id: low to high") == 0)
     {
         qsort(database, size, sizeof(Order), compareIdsAsc);

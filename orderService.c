@@ -3,7 +3,6 @@
 #include <string.h>
 #include <time.h>
 
-
 void showDatabase(Order database[], int size, const char *filterColumn, const char *filterValue, int sort_by_num)
 {
     Orders result = extractDataFromDatabase(database, size, filterColumn, filterValue, 1);

@@ -67,7 +67,7 @@ int main()
     User users[100];
     int count = 0;
     importUsers(users, &count);
-    // Session session;
+
     int choice;
     printf("Welcome to Delivery Management System!\n");
     printf("First, we need to know your identity: \n");
@@ -94,17 +94,7 @@ int main()
         break;
     }
 
-    // FOR TESTING ONLY
-
-    // Session session;
-    // session.id = 1;
-    // strcpy(session.userName, "duongng");
-    // session.groupId = 3;
-
-    // END TESTING
-
     debug("session load!");
-    // session = authenticate(users, count);
 
     order_management_main(session);
     return 0;
