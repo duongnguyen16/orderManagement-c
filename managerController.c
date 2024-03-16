@@ -135,11 +135,10 @@ void createNewOrderManager(Order database[], int *size, User users[], User curre
     {
         for (int i = 0; i < size; i++)
         {
-            if (database[i].id == id)
+            if (database[i].id == id || id == 0)
             {
                 id = rand();
                 continue;
-                printf("ID: %d already exists. Generating new ID...\n", id);
             }
         }
         ok = true;
@@ -187,9 +186,6 @@ void createNewOrderManager(Order database[], int *size, User users[], User curre
 
     strcpy(temp.order_state, "Pending");
 
-    printf("Enter delivery time (5h, 1d, 1w):\n> ");
-    scanf(" %[^\n]s", temp.estimated_delivery_time);
-
     time_t currentTime;
     time(&currentTime);
     struct tm *localTime = localtime(&currentTime);
@@ -206,7 +202,6 @@ void createNewOrderManager(Order database[], int *size, User users[], User curre
     printf("Receiver Name:\n> %s\n", temp.receiver_name);
     printf("Receiver Phone Number:\n> %s\n", temp.receiver_phone_number);
     printf("Receiver Address:\n> %s\n", temp.receiver_address);
-    printf("Estimated Delivery Time:\n> %s\n", temp.estimated_delivery_time);
     printf("Created At:\n> %s\n", temp.created_at);
 
     printf("\nConfirm? (y/n): ");
@@ -223,4 +218,113 @@ void createNewOrderManager(Order database[], int *size, User users[], User curre
     {
         printf("Operation canceled.\n");
     }
+}
+
+void editDeleteOrder(Order database[], int size)
+{
+    int id;
+    printf("Enter the ID of the order: ");
+    scanf("%d", &id);
+
+    int index = -1;
+    for (int i = 0; i < size; i++)
+    {
+        if (database[i].id == id)
+        {
+            index = i;
+            printf("\nOrder Information:\n");
+            printf("1. Product Name: %s\n", database[i].product_name);
+            printf("2. Sender Name: %s\n", database[i].sender_name);
+            printf("3. Sender Phone Number: %s\n", database[i].sender_phone_number);
+            printf("4. Receiver Name: %s\n", database[i].receiver_name);
+            printf("5. Receiver Phone Number: %s\n", database[i].receiver_phone_number);
+            printf("6. Receiver Address: %s\n", database[i].receiver_address);
+            printf("7. Order State: %s\n", database[i].order_state);
+            printf("8. Created At: %s\n", database[i].created_at);
+            break;
+        }
+    }
+
+    if (index == -1)
+    {
+        printf("Order not found.\n");
+        return;
+    }
+
+    int choice;
+    printf("\nWhat do you want to do?\n");
+    printf("1. Edit order\n");
+    printf("2. Delete order\n");
+    printf("3. Cancel\n");
+    printf("Enter your choice (1-3): ");
+    scanf("%d", &choice);
+
+    if (choice == 1)
+    {
+        printf("\nOrder Information:\n");
+        printf("1. Product Name: %s\n", database[index].product_name);
+        printf("2. Sender Name: %s\n", database[index].sender_name);
+        printf("3. Sender Phone Number: %s\n", database[index].sender_phone_number);
+        printf("4. Receiver Name: %s\n", database[index].receiver_name);
+        printf("5. Receiver Phone Number: %s\n", database[index].receiver_phone_number);
+        printf("6. Receiver Address: %s\n", database[index].receiver_address);
+        printf("7. Order State: %s\n", database[index].order_state);
+        printf("8. Created At: %s\n", database[index].created_at);
+
+        int editChoice;
+        printf("\nEnter the number of the information you want to edit (1-7): ");
+        scanf("%d", &editChoice);
+
+        switch (editChoice)
+        {
+        case 1:
+            printf("Enter new product name: ");
+            scanf(" %[^\n]s", database[index].product_name);
+            break;
+        case 2:
+            printf("Enter new sender name: ");
+            scanf(" %[^\n]s", database[index].sender_name);
+            break;
+        case 3:
+            printf("Enter new sender phone number: ");
+            scanf(" %[^\n]s", database[index].sender_phone_number);
+            break;
+        case 4:
+            printf("Enter new receiver name: ");
+            scanf(" %[^\n]s", database[index].receiver_name);
+            break;
+        case 5:
+            printf("Enter new receiver phone number: ");
+            scanf(" %[^\n]s", database[index].receiver_phone_number);
+            break;
+        case 6:
+            printf("Enter new receiver address: ");
+            scanf(" %[^\n]s", database[index].receiver_address);
+            break;
+        case 7:
+            printf("Enter new order state (pending/shipping/delivery): ");
+            scanf(" %[^\n]s", database[index].order_state);
+            break;
+        default:
+            printf("Invalid choice. Please try again.\n");
+            break;
+        }
+    }
+
+    else if (choice == 2)
+    {
+        for (int i = index; i < size - 1; i++)
+        {
+            database[i] = database[i + 1];
+        }
+        size--;
+        memset(&database[size], 0, sizeof(Order));
+
+        printf("Order deleted successfully.\n");
+    }
+    else
+    {
+        printf("Cancelled.\n");
+    }
+    exportDatabase(database, size);
 }

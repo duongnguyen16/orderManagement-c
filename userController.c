@@ -21,7 +21,7 @@ void lookupOrderUser(Order database[], int size, char phoneNumber[100])
     else
     {
         Order result = foundOrders.orders[0];
-        printf("State: %s (EDT: %s)\n\n", result.order_state, result.estimated_delivery_time);
+        printf("State: %s\n\n", result.order_state);
         printf("ID: %d\n", result.id);
         printf("Package: %s\n", result.product_name);
         printf("Sender: %s\n", result.sender_name);
@@ -46,11 +46,10 @@ void createNewOrderUser(Order database[], int *size, User users[], User currentU
     {
         for (int i = 0; i < size; i++)
         {
-            if (database[i].id == id)
+            if (database[i].id == id || id == 0)
             {
                 id = rand();
                 continue;
-                printf("ID: %d already exists. Generating new ID...\n", id);
             }
         }
         ok = true;
@@ -90,9 +89,6 @@ void createNewOrderUser(Order database[], int *size, User users[], User currentU
 
     strcpy(temp.order_state, "Pending");
 
-    printf("Enter delivery time (5h, 1d, 1w):\n> ");
-    scanf(" %[^\n]s", temp.estimated_delivery_time);
-
     time_t currentTime;
     time(&currentTime);
     struct tm *localTime = localtime(&currentTime);
@@ -109,7 +105,6 @@ void createNewOrderUser(Order database[], int *size, User users[], User currentU
     printf("Receiver Name:\n> %s\n", temp.receiver_name);
     printf("Receiver Phone Number:\n> %s\n", temp.receiver_phone_number);
     printf("Receiver Address:\n> %s\n", temp.receiver_address);
-    printf("Estimated Delivery Time:\n> %s\n", temp.estimated_delivery_time);
     printf("Created At:\n> %s\n", temp.created_at);
 
     printf("\nConfirm? (y/n): ");

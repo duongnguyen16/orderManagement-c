@@ -14,13 +14,13 @@ typedef struct
     char receiver_name[50];
     char receiver_phone_number[20];
     char receiver_address[100];
-    char estimated_delivery_time[50];
     char created_at[50];
 } Order;
 
 typedef struct
 {
     int size;
+    char sort_by[100];
     Order orders[400];
 } Orders;
 
@@ -48,7 +48,7 @@ char ORDERS_FILE_NAME[20] = "orders.txt";
 char USERS_FILE_NAME[20] = "users.txt";
 char GROUPS_FILE_NAME[20] = "groups.txt";
 char PERM_FILE_NAME[20] = "perm.txt";
-int MAX_ORDERS_AVAILABLE = 20;
+int MAX_ORDERS_AVAILABLE = 1000;
 
 #include "uiService.c"
 #include "handleDatabase.c"
@@ -99,7 +99,7 @@ int main()
     Session session;
     session.id = 1;
     strcpy(session.userName, "duongng");
-    session.groupId = 1;
+    session.groupId = 3;
 
     // END TESTING
 

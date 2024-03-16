@@ -3,124 +3,31 @@
 #include <string.h>
 #include <time.h>
 
-void editDeleteOrder(Order database[], int size)
-{
-    int id;
-    printf("Enter the ID of the order: ");
-    scanf("%d", &id);
 
-    int index = -1;
-    for (int i = 0; i < size; i++)
-    {
-        if (database[i].id == id)
-        {
-            index = i;
-            printf("\nOrder Information:\n");
-            printf("1. Product Name: %s\n", database[i].product_name);
-            printf("2. Sender Name: %s\n", database[i].sender_name);
-            printf("3. Sender Phone Number: %s\n", database[i].sender_phone_number);
-            printf("4. Receiver Name: %s\n", database[i].receiver_name);
-            printf("5. Receiver Phone Number: %s\n", database[i].receiver_phone_number);
-            printf("6. Receiver Address: %s\n", database[i].receiver_address);
-            printf("7. Order State: %s\n", database[i].order_state);
-            printf("8. Estimated Delivery Time: %s\n", database[i].estimated_delivery_time);
-            printf("9. Created At: %s\n", database[i].created_at);
-            break;
-        }
-    }
-
-    if (index == -1)
-    {
-        printf("Order not found.\n");
-        return;
-    }
-
-    int choice;
-    printf("\nWhat do you want to do?\n");
-    printf("1. Edit order\n");
-    printf("2. Delete order\n");
-    printf("3. Cancel\n");
-    printf("Enter your choice (1-3): ");
-    scanf("%d", &choice);
-
-    if (choice == 1)
-    {
-        printf("\nOrder Information:\n");
-        printf("1. Product Name: %s\n", database[index].product_name);
-        printf("2. Sender Name: %s\n", database[index].sender_name);
-        printf("3. Sender Phone Number: %s\n", database[index].sender_phone_number);
-        printf("4. Receiver Name: %s\n", database[index].receiver_name);
-        printf("5. Receiver Phone Number: %s\n", database[index].receiver_phone_number);
-        printf("6. Receiver Address: %s\n", database[index].receiver_address);
-        printf("7. Order State: %s\n", database[index].order_state);
-        printf("8. Estimated Delivery Time: %s\n", database[index].estimated_delivery_time);
-        printf("9. Created At: %s\n", database[index].created_at);
-
-        int editChoice;
-        printf("\nEnter the number of the information you want to edit (1-8): ");
-        scanf("%d", &editChoice);
-
-        switch (editChoice)
-        {
-        case 1:
-            printf("Enter new product name: ");
-            scanf(" %[^\n]s", database[index].product_name);
-            break;
-        case 2:
-            printf("Enter new sender name: ");
-            scanf(" %[^\n]s", database[index].sender_name);
-            break;
-        case 3:
-            printf("Enter new sender phone number: ");
-            scanf(" %[^\n]s", database[index].sender_phone_number);
-            break;
-        case 4:
-            printf("Enter new receiver name: ");
-            scanf(" %[^\n]s", database[index].receiver_name);
-            break;
-        case 5:
-            printf("Enter new receiver phone number: ");
-            scanf(" %[^\n]s", database[index].receiver_phone_number);
-            break;
-        case 6:
-            printf("Enter new receiver address: ");
-            scanf(" %[^\n]s", database[index].receiver_address);
-            break;
-        case 7:
-            printf("Enter new order state (pending/shipping/delivery): ");
-            scanf(" %[^\n]s", database[index].order_state);
-            break;
-        case 8:
-            printf("Enter new estimated delivery time (5h, 1d, 1w): ");
-            scanf(" %[^\n]s", database[index].estimated_delivery_time);
-            break;
-        default:
-            printf("Invalid choice. Please try again.\n");
-            break;
-        }
-    }
-
-    else if (choice == 2)
-    {
-        for (int i = index; i < size - 1; i++)
-        {
-            database[i] = database[i + 1];
-        }
-        size--;
-        memset(&database[size], 0, sizeof(Order));
-
-        printf("Order deleted successfully.\n");
-    }
-    else
-    {
-        printf("Cancelled.\n");
-    }
-    exportDatabase(database, size);
-}
-
-void showDatabase(Order database[], int size, const char *filterColumn, const char *filterValue)
+void showDatabase(Order database[], int size, const char *filterColumn, const char *filterValue, int sort_by_num)
 {
     Orders result = extractDataFromDatabase(database, size, filterColumn, filterValue, 1);
+    switch (sort_by_num)
+    {
+    case 1:
+        strcpy(result.sort_by, "State");
+        break;
+    case 2:
+        strcpy(result.sort_by, "Id: low to high");
+        break;
+    case 3:
+        strcpy(result.sort_by, "Id: high to low");
+        break;
+    case 4:
+        strcpy(result.sort_by, "Product_name: A-Z");
+        break;
+    case 5:
+        strcpy(result.sort_by, "Product_name: Z-A");
+        break;
+    default:
+        strcpy(result.sort_by, "State");
+        break;
+    }
     showTable(result, "No orders found.");
 }
 
@@ -146,48 +53,38 @@ void order_management_main(Session session)
         exportDatabase(database, size);
 
         char defaultTable;
-        if (session.groupId == 1)
+        if (session.groupId <= 2)
             defaultTable = 'a';
-        else if (session.groupId == 2)
-            defaultTable = 'c';
         else
-            defaultTable = 'd';
+        {
+            defaultTable = 'c';
+        }
 
         char choice = defaultTable;
         char currentTab = defaultTable;
+        int sort_by_num = 1;
         do
         {
             choice = currentTab;
 
             system("cls");
-
-            printf("| Current session: %s [%s]\n\n", currentUser.displayName, GROUP_NAME[session.groupId]);
-            printf("  [1] Look up/ Search \t [2] Create an order  \t [3] Edit/Delete order \t [0] Log out / Exit\n\n");
-
-            printf("%c (a) Sent %c   %c (b) Receive %c   %c (c) Assigned %c   %c (d) All %c\n",
-                   showTabs(choice, 'a'), showTabs(choice, 'a'),
-                   showTabs(choice, 'b'), showTabs(choice, 'b'),
-                   showTabs(choice, 'c'), showTabs(choice, 'c'),
-                   showTabs(choice, 'd'), showTabs(choice, 'd'));
+            printf("| Current session: %s [%s]\n", currentUser.displayName, GROUP_NAME[session.groupId]);
+            showMenu(session.groupId);
+            showTabs(choice, session.groupId);
 
             switch (choice)
             {
             case 'a':
-                showDatabase(database, size, "sender_phone_number", currentUser.phoneNumber);
+                showDatabase(database, size, "sender_phone_number", currentUser.phoneNumber, sort_by_num);
                 currentTab = 'a';
                 break;
             case 'b':
-                showDatabase(database, size, "receiver_phone_number", currentUser.phoneNumber);
+                showDatabase(database, size, "receiver_phone_number", currentUser.phoneNumber, sort_by_num);
                 currentTab = 'b';
                 break;
             case 'c':
-
-                printf("\n3In development.\n");
+                showDatabase(database, size, "", "", sort_by_num);
                 currentTab = 'c';
-                break;
-            case 'd':
-                showDatabase(database, size, "", "");
-                currentTab = 'd';
                 break;
             }
             printf("> Enter: ");
@@ -199,11 +96,11 @@ void order_management_main(Session session)
                 system("cls");
                 if (session.groupId >= 2)
                 {
-                    lookupOrderManager(database, &size);
+                    lookupOrderManager(database, size);
                 }
                 else
                 {
-                    lookupOrderUser(database, &size, currentUser.phoneNumber);
+                    lookupOrderUser(database, size, currentUser.phoneNumber);
                 }
                 getchar();
                 printf("\nPress [Enter] to continue...");
@@ -225,12 +122,20 @@ void order_management_main(Session session)
                 break;
             case '3':
                 system("cls");
-                editDeleteOrder(database, size);
-                printf("Press [Enter] to continue...");
-                getchar();
+                if (session.groupId > 2)
+                {
+                    editDeleteOrder(database, size);
+                    printf("Press [Enter] to continue...");
+                    getchar();
+                }
+                else
+                {
+                    printf("Invalid choice. Please try again.\n");
+                }
+
                 break;
             case '0':
-                main();
+                return;
             case 'a':
                 currentTab = 'a';
                 break;
@@ -238,10 +143,17 @@ void order_management_main(Session session)
                 currentTab = 'b';
                 break;
             case 'c':
-                currentTab = 'c';
+                if (session.groupId > 2)
+                {
+                    currentTab = 'c';
+                }
+                else
+                {
+                    printf("Invalid choice. Please try again.\n");
+                }
                 break;
-            case 'd':
-                currentTab = 'd';
+            case 's':
+                sort_by_num = sort_by_choose();
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");

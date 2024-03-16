@@ -14,7 +14,7 @@ void importDatabase(Order database[], int *size)
     }
 
     *size = 0;
-    while (fscanf(file, "%d\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^\n]",
+    while (fscanf(file, "%d\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^'\t']\t%[^\n]",
                   &database[*size].id,
                   database[*size].product_name,
                   database[*size].order_state,
@@ -23,8 +23,7 @@ void importDatabase(Order database[], int *size)
                   database[*size].receiver_name,
                   database[*size].receiver_phone_number,
                   database[*size].receiver_address,
-                  database[*size].estimated_delivery_time,
-                  database[*size].created_at) == 10)
+                  database[*size].created_at) == 9)
     {
         (*size)++;
     }
@@ -45,7 +44,7 @@ void exportDatabase(Order database[], int size)
 
     for (int i = 0; i < size; i++)
     {
-        fprintf(file, "%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+        fprintf(file, "%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
                 database[i].id,
                 database[i].product_name,
                 database[i].order_state,
@@ -54,7 +53,6 @@ void exportDatabase(Order database[], int size)
                 database[i].receiver_name,
                 database[i].receiver_phone_number,
                 database[i].receiver_address,
-                database[i].estimated_delivery_time,
                 database[i].created_at);
     }
 
@@ -101,10 +99,6 @@ Orders extractDataFromDatabase(Order database[], int size, char filter[100], cha
             match = 1;
         }
         else if (strcmp(filter, "receiver_address") == 0 && (exactly ? strcmp(database[i].receiver_address, value) == 0 : strstr(database[i].receiver_address, value) != NULL))
-        {
-            match = 1;
-        }
-        else if (strcmp(filter, "estimated_delivery_time") == 0 && (exactly ? strcmp(database[i].estimated_delivery_time, value) == 0 : strstr(database[i].estimated_delivery_time, value) != NULL))
         {
             match = 1;
         }

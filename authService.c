@@ -135,7 +135,7 @@ void registerUser(User *users, int *count)
     printf("> Address: ");
     scanf(" %[^\n]", address);
     int id = rand();
-    
+
     User newUser;
     newUser.id = id;
     strcpy(newUser.userName, username);
