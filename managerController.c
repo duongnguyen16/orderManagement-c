@@ -17,12 +17,12 @@ void lookupOrderManager(Order database[], int size)
         return;
     }
 
-    char *filterColon = strstr(userInput, ":");
-    if (filterColon != NULL)
+    char *filterRunning = strstr(userInput, ":");
+    if (filterRunning != NULL)
     {
-        *filterColon = '\0';
+        *filterRunning = '\0';
         strcpy(filter, userInput);
-        strcpy(searchValue, filterColon + 2);
+        strcpy(searchValue, filterRunning + 2);
 
         printf("Filter: %s - searchValue: %s\n", filter, searchValue);
     }
@@ -319,7 +319,6 @@ void editDeleteOrder(Order database[], int size)
         }
         size--;
         memset(&database[size], 0, sizeof(Order));
-
         printf("Order deleted successfully.\n");
     }
     else

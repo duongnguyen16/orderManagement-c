@@ -46,8 +46,10 @@ char GROUP_NAME[][50] = {"Invalid", "Customer", "Shipper", "Manager", "Admin", "
 
 char ORDERS_FILE_NAME[20] = "orders.txt";
 char USERS_FILE_NAME[20] = "users.txt";
+
 char GROUPS_FILE_NAME[20] = "groups.txt";
 char PERM_FILE_NAME[20] = "perm.txt";
+
 int MAX_ORDERS_AVAILABLE = 1000;
 
 #include "uiService.c"
