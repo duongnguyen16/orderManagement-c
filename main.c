@@ -61,7 +61,7 @@ int main()
     srand(time(NULL));
     Session session;
     system("cls");
-    // debug("init");
+
     User users[100];
     int count = 0;
     importUsers(users, &count);
@@ -91,8 +91,6 @@ int main()
         exportUsers(users, count);
         break;
     }
-
-    // debug("session load!");
 
     order_management_main(session);
     return 0;

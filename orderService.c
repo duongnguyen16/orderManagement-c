@@ -38,7 +38,7 @@ void order_management_main(Session session)
     }
     else
     {
-        // debug("init database");
+        
         Order database[MAX_ORDERS_AVAILABLE];
         int size = 0;
 

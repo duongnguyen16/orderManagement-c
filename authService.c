@@ -49,7 +49,7 @@ Session authenticate(User *users, int count)
                 session.id = users[i].id;
                 strcpy(session.userName, users[i].userName);
                 session.groupId = users[i].groupId;
-                // printf("Successfll Session: %d %s %d\n", session.id, session.userName, session.groupId);
+                
                 return session;
             }
         }

@@ -5,7 +5,7 @@
 
 void importDatabase(Order database[], int *size)
 {
-    // debug("Start to import database.");
+    
     FILE *file = fopen(ORDERS_FILE_NAME, "r");
     if (file == NULL)
     {
@@ -29,12 +29,12 @@ void importDatabase(Order database[], int *size)
     }
 
     fclose(file);
-    // debug("Database imported.");
+    
 }
 
 void exportDatabase(Order database[], int size)
 {
-    // debug("Start to export database.");
+    
     FILE *file = fopen(ORDERS_FILE_NAME, "w");
     if (file == NULL)
     {
@@ -57,12 +57,12 @@ void exportDatabase(Order database[], int size)
     }
 
     fclose(file);
-    // debug("Database exported.");
+    
 }
 
 Orders extractDataFromDatabase(Order database[], int size, char filter[100], char value[100], int exactly)
 {
-    // debug("Start to extract data from database.");
+    
     Orders result;
     result.size = 0;
 
@@ -177,7 +177,7 @@ Orders extractDataFromDatabase(Order database[], int size, char filter[100], cha
         }
     }
 
-    // debug("Data extracted from database.");
+    
     return result;
 }
 
@@ -253,11 +253,11 @@ User getUserByPhoneNumber(User *users, int count, char *phoneNumber)
             strcpy(user.password, users[i].password);
             strcpy(user.phoneNumber, users[i].phoneNumber);
             strcpy(user.address, users[i].address);
-            // // debug("getUserByPhoneNumber - found user with name: %s", user.displayName);
+            
             return user;
         }
     }
-    // debug("getUserByPhoneNumber - could not find");
+    
     User user;
     user.id = -1;
     return user;
