@@ -1,6 +1,6 @@
 void lookupOrderUser(Order database[], int size, char phoneNumber[100])
 {
-    debug("lookupOrder");
+    // debug("lookupOrder");
     char userInput[100];
     printf("[Search] Enter the ID of order here: ");
     scanf(" %[^\n]s", userInput);
@@ -11,7 +11,7 @@ void lookupOrderUser(Order database[], int size, char phoneNumber[100])
 
     Orders foundOrders = extractDataFromDatabase(database, size, "id", userInput, 1);
 
-    debug("lookupOrder - show all orders found");
+    // debug("lookupOrder - show all orders found");
 
     if (foundOrders.size == 0)
     {
@@ -39,7 +39,7 @@ void createNewOrderUser(Order database[], int *size, User users[], User currentU
 
     Order temp;
     char confirm;
-    debug("Get random ID");
+    // debug("Get random ID");
     int id = rand();
     bool ok = false;
     while (ok)
@@ -87,7 +87,7 @@ void createNewOrderUser(Order database[], int *size, User users[], User currentU
         printf("Enter receiver address (auto-filled):\n> %s\n", temp.receiver_address);
     }
 
-    strcpy(temp.order_state, "Pending");
+    strcpy(temp.order_state, "pending");
 
     time_t currentTime;
     time(&currentTime);
@@ -95,7 +95,7 @@ void createNewOrderUser(Order database[], int *size, User users[], User currentU
     strftime(temp.created_at, sizeof(temp.created_at), "%Y-%m-%d %H:%M:%S", localTime);
     printf("Created at (auto-filled):\n> %s\n\n", temp.created_at);
 
-    debug("Show all information before confirm");
+    // debug("Show all information before confirm");
 
     printf("\n|PLEASE RECHECK THE INFORMATION:\n");
     printf("ID:\n> %d\n", temp.id);

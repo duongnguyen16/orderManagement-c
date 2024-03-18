@@ -5,7 +5,7 @@
 
 void importDatabase(Order database[], int *size)
 {
-    debug("Start to import database.");
+    // debug("Start to import database.");
     FILE *file = fopen(ORDERS_FILE_NAME, "r");
     if (file == NULL)
     {
@@ -29,12 +29,12 @@ void importDatabase(Order database[], int *size)
     }
 
     fclose(file);
-    debug("Database imported.");
+    // debug("Database imported.");
 }
 
 void exportDatabase(Order database[], int size)
 {
-    debug("Start to export database.");
+    // debug("Start to export database.");
     FILE *file = fopen(ORDERS_FILE_NAME, "w");
     if (file == NULL)
     {
@@ -57,12 +57,12 @@ void exportDatabase(Order database[], int size)
     }
 
     fclose(file);
-    debug("Database exported.");
+    // debug("Database exported.");
 }
 
 Orders extractDataFromDatabase(Order database[], int size, char filter[100], char value[100], int exactly)
 {
-    debug("Start to extract data from database.");
+    // debug("Start to extract data from database.");
     Orders result;
     result.size = 0;
 
@@ -70,42 +70,106 @@ Orders extractDataFromDatabase(Order database[], int size, char filter[100], cha
     {
         int match = 0;
 
-        if (strcmp(filter, "id") == 0 && database[i].id == atoi(value))
+        if (strcmp(filter, "") == 0 && strcmp(value, "") == 0)
         {
             match = 1;
         }
-        else if (strcmp(filter, "product_name") == 0 && (exactly ? strcmp(database[i].product_name, value) == 0 : strstr(database[i].product_name, value) != NULL))
+        else if (strcmp(filter, "id") == 0 && database[i].id == atoi(value))
         {
             match = 1;
         }
-        else if (strcmp(filter, "order_state") == 0 && (exactly ? strcmp(database[i].order_state, value) == 0 : strstr(database[i].order_state, value) != NULL))
+        else if (strcmp(filter, "product_name") == 0)
         {
-            match = 1;
+            if (exactly)
+            {
+                if (strcmp(database[i].product_name, value) == 0)
+                    match = 1;
+            }
+            else
+            {
+                if (strstr(database[i].product_name, value) != NULL)
+                    match = 1;
+            }
         }
-        else if (strcmp(filter, "sender_name") == 0 && (exactly ? strcmp(database[i].sender_name, value) == 0 : strstr(database[i].sender_name, value) != NULL))
+        else if (strcmp(filter, "order_state") == 0)
         {
-            match = 1;
+            if (exactly)
+            {
+                if (strcmp(database[i].order_state, value) == 0)
+                    match = 1;
+            }
+            else
+            {
+                if (strstr(database[i].order_state, value) != NULL)
+                    match = 1;
+            }
         }
-        else if (strcmp(filter, "sender_phone_number") == 0 && (exactly ? strcmp(database[i].sender_phone_number, value) == 0 : strstr(database[i].sender_phone_number, value) != NULL))
+        else if (strcmp(filter, "sender_name") == 0)
         {
-            match = 1;
+            if (exactly)
+            {
+                if (strcmp(database[i].sender_name, value) == 0)
+                    match = 1;
+            }
+            else
+            {
+                if (strstr(database[i].sender_name, value) != NULL)
+                    match = 1;
+            }
         }
-        else if (strcmp(filter, "receiver_name") == 0 && (exactly ? strcmp(database[i].receiver_name, value) == 0 : strstr(database[i].receiver_name, value) != NULL))
+        else if (strcmp(filter, "sender_phone_number") == 0)
         {
-            match = 1;
+            if (exactly)
+            {
+                if (strcmp(database[i].sender_phone_number, value) == 0)
+                    match = 1;
+            }
+            else
+            {
+                if (strstr(database[i].sender_phone_number, value) != NULL)
+                    match = 1;
+            }
         }
-        else if (strcmp(filter, "receiver_phone_number") == 0 && (exactly ? strcmp(database[i].receiver_phone_number, value) == 0 : strstr(database[i].receiver_phone_number, value) != NULL))
+        else if (strcmp(filter, "receiver_name") == 0)
         {
-            match = 1;
+            if (exactly)
+            {
+                if (strcmp(database[i].receiver_name, value) == 0)
+                    match = 1;
+            }
+            else
+            {
+                if (strstr(database[i].receiver_name, value) != NULL)
+                    match = 1;
+            }
         }
-        else if (strcmp(filter, "receiver_address") == 0 && (exactly ? strcmp(database[i].receiver_address, value) == 0 : strstr(database[i].receiver_address, value) != NULL))
+        else if (strcmp(filter, "receiver_phone_number") == 0)
         {
-            match = 1;
+            if (exactly)
+            {
+                if (strcmp(database[i].receiver_phone_number, value) == 0)
+                    match = 1;
+            }
+            else
+            {
+                if (strstr(database[i].receiver_phone_number, value) != NULL)
+                    match = 1;
+            }
         }
-        else if (strcmp(filter, "") == 0 && strcmp(value, "") == 0)
+        else if (strcmp(filter, "receiver_address") == 0)
         {
-            match = 1;
+            if (exactly)
+            {
+                if (strcmp(database[i].receiver_address, value) == 0)
+                    match = 1;
+            }
+            else
+            {
+                if (strstr(database[i].receiver_address, value) != NULL)
+                    match = 1;
+            }
         }
+
         if (match)
         {
             result.orders[result.size] = database[i];
@@ -113,7 +177,7 @@ Orders extractDataFromDatabase(Order database[], int size, char filter[100], cha
         }
     }
 
-    debug("Data extracted from database.");
+    // debug("Data extracted from database.");
     return result;
 }
 
@@ -189,11 +253,11 @@ User getUserByPhoneNumber(User *users, int count, char *phoneNumber)
             strcpy(user.password, users[i].password);
             strcpy(user.phoneNumber, users[i].phoneNumber);
             strcpy(user.address, users[i].address);
-            debug("getUserByPhoneNumber - found user with name: %s", user.displayName);
+            // // debug("getUserByPhoneNumber - found user with name: %s", user.displayName);
             return user;
         }
     }
-    debug("getUserByPhoneNumber - could not find");
+    // debug("getUserByPhoneNumber - could not find");
     User user;
     user.id = -1;
     return user;

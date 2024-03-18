@@ -7,7 +7,7 @@
 
 #include "validateService.c"
 
-bool isUsernameExist(const User *users, int count, const char *username)
+bool isUsernameExist(User *users, int count, char *username)
 {
     for (int i = 0; i < count; i++)
     {
@@ -49,7 +49,7 @@ Session authenticate(User *users, int count)
                 session.id = users[i].id;
                 strcpy(session.userName, users[i].userName);
                 session.groupId = users[i].groupId;
-                // printf("Authentication successfully! Session: %d %s %d\n", session.id, session.userName, session.groupId);
+                // printf("Successfll Session: %d %s %d\n", session.id, session.userName, session.groupId);
                 return session;
             }
         }

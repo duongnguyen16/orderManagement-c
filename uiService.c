@@ -7,70 +7,86 @@ void spam_something(char *str, int n)
     printf("\n");
 }
 
-int compareIdsAsc(const void *a, const void *b)
+int compareOrders(void *a, void *b, char *sort_type)
 {
-    const Order *orderA = (const Order *)a;
-    const Order *orderB = (const Order *)b;
-    return orderA->id - orderB->id;
-}
+    Order *oa = (Order *)a;
+    Order *ob = (Order *)b;
 
-int compareIdsDesc(const void *a, const void *b)
-{
-    const Order *orderA = (const Order *)a;
-    const Order *orderB = (const Order *)b;
-    return orderB->id - orderA->id;
-}
-
-int compareProductNamesAsc(const void *a, const void *b)
-{
-    const Order *orderA = (const Order *)a;
-    const Order *orderB = (const Order *)b;
-    return strcmp(orderA->product_name, orderB->product_name);
-}
-
-int compareProductNamesDesc(const void *a, const void *b)
-{
-    const Order *orderA = (const Order *)a;
-    const Order *orderB = (const Order *)b;
-    return strcmp(orderB->product_name, orderA->product_name);
-}
-
-int compareStates(const void *a, const void *b)
-{
-    const Order *orderA = (const Order *)a;
-    const Order *orderB = (const Order *)b;
-
-    if (strcmp(orderA->order_state, orderB->order_state) == 0)
+    if (strcmp(sort_type, "Id: low to high") == 0)
     {
-        return orderA->id - orderB->id;
+        return oa->id - ob->id;
     }
-    else if (strcmp(orderA->order_state, "pending") == 0)
+    else if (strcmp(sort_type, "Id: high to low") == 0)
     {
-        return -1;
+        return ob->id - oa->id;
     }
-    else if (strcmp(orderB->order_state, "pending") == 0)
+    else if (strcmp(sort_type, "Product_name: A-Z") == 0)
     {
-        return 1;
+        return strcmp(oa->product_name, ob->product_name);
     }
-    else if (strcmp(orderA->order_state, "delivery") == 0)
+    else if (strcmp(sort_type, "Product_name: Z-A") == 0)
     {
-        return -1;
-    }
-    else if (strcmp(orderB->order_state, "delivery") == 0)
-    {
-        return 1;
-    }
-    else if (strcmp(orderA->order_state, "shipping") == 0)
-    {
-        return -1;
+        return strcmp(ob->product_name, oa->product_name);
     }
     else
+    // state
     {
-        return 1;
+        if (strcmp(oa->order_state, ob->order_state) == 0)
+        {
+            return oa->id - ob->id;
+        }
+        else if (strcmp(oa->order_state, "pending") == 0)
+        {
+            return -1;
+        }
+        else if (strcmp(ob->order_state, "pending") == 0)
+        {
+            return 1;
+        }
+        else if (strcmp(oa->order_state, "delivery") == 0)
+        {
+            return -1;
+        }
+        else if (strcmp(ob->order_state, "delivery") == 0)
+        {
+            return 1;
+        }
+        else if (strcmp(oa->order_state, "shipping") == 0)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
     }
 }
 
-void showTable(Orders orders, const char *noOrderMessage)
+void sort(Order *arr, int size, char *sort_type)
+{
+    int index;
+    Order temp;
+
+    for (int i = 0; i < size - 1; i++)
+    {
+        index = i;
+        for (int j = i + 1; j < size; j++)
+        {
+            if (compareOrders(&arr[j], &arr[index], sort_type) < 0)
+            {
+                index = j;
+            }
+        }
+        if (index != i)
+        {
+            temp = arr[i];
+            arr[i] = arr[index];
+            arr[index] = temp;
+        }
+    }
+}
+
+void showTable(Orders orders, char *noOrderMessage)
 {
 
     int size = orders.size;
@@ -80,31 +96,11 @@ void showTable(Orders orders, const char *noOrderMessage)
 
     if (size == 0)
     {
-        printf("%s\n", noOrderMessage);
+        printf("\n%s\n", noOrderMessage);
         return;
     }
 
-    if (strcmp(sort_by, "Id: low to high") == 0)
-    {
-        qsort(database, size, sizeof(Order), compareIdsAsc);
-    }
-    else if (strcmp(sort_by, "Id: high to low") == 0)
-    {
-        qsort(database, size, sizeof(Order), compareIdsDesc);
-    }
-    else if (strcmp(sort_by, "Product_name: A-Z") == 0)
-    {
-        qsort(database, size, sizeof(Order), compareProductNamesAsc);
-    }
-    else if (strcmp(sort_by, "Product_name: Z-A") == 0)
-    {
-        qsort(database, size, sizeof(Order), compareProductNamesDesc);
-    }
-    else
-    {
-        strcpy(sort_by, "State");
-        qsort(database, size, sizeof(Order), compareStates);
-    }
+    sort(database, size, sort_by);
 
     int columnWidths[9] = {3, 8, 5, 7, 8, 12, 17, 17, 10};
 

@@ -2,7 +2,7 @@
 
 void lookupOrderManager(Order database[], int size)
 {
-    debug("lookupOrder");
+    // debug("lookupOrder");
     char userInput[100];
     printf("[Search]: ");
     scanf(" %[^\n]s", userInput);
@@ -17,7 +17,9 @@ void lookupOrderManager(Order database[], int size)
         return;
     }
 
+    // tìm kiếm :
     char *filterRunning = strstr(userInput, ":");
+
     if (filterRunning != NULL)
     {
         *filterRunning = '\0';
@@ -58,12 +60,12 @@ void lookupOrderManager(Order database[], int size)
                 break;
             }
 
-            Orders foundOrders = extractDataFromDatabase(database, size, rf, userInput, 0);
+            Orders res = extractDataFromDatabase(database, size, rf, userInput, 0);
 
-            if (foundOrders.size > 0)
+            if (res.size > 0)
             {
                 printf("\nOrders found with filter %s:\n", rf);
-                showTable(foundOrders, "No orders found.");
+                showTable(res, "No orders found.");
                 printf("\n");
             }
         }
@@ -104,20 +106,20 @@ void lookupOrderManager(Order database[], int size)
         return;
     }
 
-    debug("lookupOrder - after filter check");
+    // debug("lookupOrder - after filter check");
 
-    Orders foundOrders = extractDataFromDatabase(database, size, rf, searchValue, 0);
+    Orders res = extractDataFromDatabase(database, size, rf, searchValue, 0);
 
-    debug("lookupOrder - show all orders found");
+    // debug("lookupOrder - show all orders found");
 
-    if (foundOrders.size == 0)
+    if (res.size == 0)
     {
         printf("\nOrder not found.\n");
         return;
     }
     else
     {
-        showTable(foundOrders, "Orders not found");
+        showTable(res, "Orders not found");
         printf("\n");
     }
 }
@@ -128,7 +130,7 @@ void createNewOrderManager(Order database[], int *size, User users[], User curre
 
     Order temp;
     char confirm;
-    debug("Get random ID");
+    // debug("Get random ID");
     int id = rand();
     bool ok = false;
     while (ok)
@@ -192,7 +194,7 @@ void createNewOrderManager(Order database[], int *size, User users[], User curre
     strftime(temp.created_at, sizeof(temp.created_at), "%Y-%m-%d %H:%M:%S", localTime);
     printf("Created at (auto-filled):\n> %s\n\n", temp.created_at);
 
-    debug("Show all information before confirm");
+    // debug("Show all information before confirm");
 
     printf("\n|PLEASE RECHECK THE INFORMATION:\n");
     printf("ID:\n> %d\n", temp.id);

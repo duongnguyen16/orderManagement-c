@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-void showDatabase(Order database[], int size, const char *filterColumn, const char *filterValue, int sort_by_num)
+void showDatabase(Order database[], int size, char *filterColumn, char *filterValue, int sort_by_num)
 {
     Orders result = extractDataFromDatabase(database, size, filterColumn, filterValue, 1);
     switch (sort_by_num)
@@ -38,7 +38,7 @@ void order_management_main(Session session)
     }
     else
     {
-        debug("init database");
+        // debug("init database");
         Order database[MAX_ORDERS_AVAILABLE];
         int size = 0;
 

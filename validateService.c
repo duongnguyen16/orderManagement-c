@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-bool validateUsername(const char *username)
+bool validateUsername(char *username)
 {
 
     if (strchr(username, ' ') != NULL)
@@ -20,7 +20,7 @@ bool validateUsername(const char *username)
     return true;
 }
 
-bool validatePassword(const char *password)
+bool validatePassword(char *password)
 {
 
     if (strchr(password, ' ') != NULL)
@@ -36,7 +36,7 @@ bool validatePassword(const char *password)
     return true;
 }
 
-bool validatePhoneNumber(const char *phoneNumber)
+bool validatePhoneNumber(char *phoneNumber)
 {
 
     for (int i = 0; i < strlen(phoneNumber); i++)
@@ -50,7 +50,7 @@ bool validatePhoneNumber(const char *phoneNumber)
     return true;
 }
 
-bool validateDisplayName(const char *displayName)
+bool validateDisplayName(char *displayName)
 {
 
     if (strlen(displayName) == 0)

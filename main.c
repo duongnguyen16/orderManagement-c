@@ -42,13 +42,10 @@ typedef struct
     char address[100];
 } User;
 
-char GROUP_NAME[][50] = {"Invalid", "Customer", "Shipper", "Manager", "Admin", "Tester"};
+char GROUP_NAME[][50] = {"Invalid", "Customer", "Shipper", "Manager", "Admin", ""};
 
 char ORDERS_FILE_NAME[20] = "orders.txt";
 char USERS_FILE_NAME[20] = "users.txt";
-
-char GROUPS_FILE_NAME[20] = "groups.txt";
-char PERM_FILE_NAME[20] = "perm.txt";
 
 int MAX_ORDERS_AVAILABLE = 1000;
 
@@ -56,7 +53,6 @@ int MAX_ORDERS_AVAILABLE = 1000;
 #include "handleDatabase.c"
 #include "authService.c"
 #include "orderService.c"
-#include "debug.c"
 #include "managerController.c"
 #include "userController.c"
 
@@ -65,7 +61,7 @@ int main()
     srand(time(NULL));
     Session session;
     system("cls");
-    debug("init");
+    // debug("init");
     User users[100];
     int count = 0;
     importUsers(users, &count);
@@ -96,7 +92,7 @@ int main()
         break;
     }
 
-    debug("session load!");
+    // debug("session load!");
 
     order_management_main(session);
     return 0;
