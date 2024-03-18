@@ -10,4 +10,3 @@
 10348	Seagate Backup Plus	shipping	Duong Nguyen	0868802306	Nha Lu Hanh	0982888888	Teyvat	2023-10-12 12:47:39
 64273	iPhone 13 Pro Max	pending	Nguyen Van A	123456	Duong Nguyen	0868802306	Hoa Lac, Ha Noi	2023-07-22 09:34:57
 82936	Asus ROG Zephyrus G14	delivery	Duong Nguyen	0868802306	Nguyen Van A	123456	Hoa Lac, Ha Noi	2023-08-08 14:15:33
-14855	Choiri	pending	Nha Lu Hanh	0982888888	Duong Nguyen	0868802306	Hoa Lac, Ha Noi	2024-03-18 10:30:49
