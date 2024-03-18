@@ -29,7 +29,7 @@ int compareOrders(void *a, void *b, char *sort_type)
         return strcmp(ob->product_name, oa->product_name);
     }
     else
-    
+
     {
         if (strcmp(oa->order_state, ob->order_state) == 0)
         {
@@ -96,7 +96,6 @@ void showTable(Orders orders, char *noOrderMessage)
 
     if (size == 0)
     {
-        printf("\n%s\n", noOrderMessage);
         printf("\n%s\n", noOrderMessage);
         return;
     }

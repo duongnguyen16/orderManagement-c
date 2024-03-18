@@ -84,11 +84,13 @@ int main()
     case 2:
         registerUser(users, &count);
         exportUsers(users, count);
+        main();
         break;
 
     default:
         printf("Invalid choice.\n");
         exportUsers(users, count);
+        main();
         break;
     }
 
