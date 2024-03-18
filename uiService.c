@@ -97,7 +97,7 @@ void showTable(Orders orders, const char *noOrderMessage)
 
     if (size == 0)
     {
-        printf("%s\n", noOrderMessage);
+        printf("\n%s\n", noOrderMessage);
         return;
     }
 
